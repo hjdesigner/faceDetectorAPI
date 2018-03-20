@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style>
+		.content {
+			position: relative;
+		}
+	</style>
+</head>
+<body>
+
+	<div class="content">
+		<img src="./image.jpg" alt="" id="image">
+	</div>
+
+<script>
+		
+	const image = document.getElementById('image');
+	const content = document.querySelector('.content');
+	const colors = ['#FF4500', '#000000', '#EEDD82', '#1E90FF']
+
+	if (window.FaceDetector) {
+  
+  	const faceDetector = new FaceDetector();
+  	faceDetector.detect(image)
+    	.then(faces => {
+      	for(var i = 0; i < faces.length; i++) {
+					const face = faces[i].boundingBox;
+					const div = `<div
+						style="width:${face.width}px;
+						height:${face.height}px;
+						top:${face.top}px;
+						left:${face.left}px;
+						position: absolute;
+						border: 3px  solid ${colors[i]}"></div>`;
+					content.insertAdjacentHTML('beforeend', div);
+      	}
+    	}).catch((err) => {
+      	console.error("Face detection failed " + err);
+    	});
+	}else {
+		console.log('do not support')
+	}
+</script>
+</body>
+</html>
